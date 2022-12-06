@@ -30,7 +30,6 @@ class Day05(Day):
                 removed.append(input.stacks[move.start - 1].pop())            
             removed.reverse()
             input.stacks[move.end - 1].extend(removed)
-
         return self.result(input.stacks)
 
     def result(self, stacks):
