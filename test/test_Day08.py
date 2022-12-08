@@ -5,19 +5,19 @@ from aoc.day08.Day08 import Day08
 class testDay08(unittest.TestCase):
     def test_part1_dummy(self):
         class_under_test = Day08().init_with(True)
-        self.assertEqual("", str(class_under_test.run1()))
+        self.assertEqual("21", str(class_under_test.run1()))
 
     def test_part1(self):
         class_under_test = Day08().init_with(False)
-        self.assertEqual("", str(class_under_test.run1()))
+        self.assertEqual("1823", str(class_under_test.run1()))
 
     def test_part2_dummy(self):
         class_under_test = Day08().init_with(True)
-        self.assertEqual("", str(class_under_test.run2()))
+        self.assertEqual("8", str(class_under_test.run2()))
 
     def test_part2(self):
         class_under_test = Day08().init_with(False)
-        self.assertEqual("", str(class_under_test.run2()))
+        self.assertEqual("211680", str(class_under_test.run2()))
 
 
 if __name__ == '__main__':

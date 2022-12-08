@@ -1,6 +1,5 @@
 import re
 from dataclasses import dataclass
-from aoc.day05.Move import Move
 
 @dataclass
 class File:
