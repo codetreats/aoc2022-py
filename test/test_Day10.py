@@ -17,6 +17,7 @@ class testDay10(unittest.TestCase):
         self.assertEqual(expected, str(class_under_test.run2()))
 
     def test_part2(self):
+        # expected = EHPZPJGL
         expected = "\n####.#..#.###..####.###....##..##..#....\n#....#..#.#..#....#.#..#....#.#..#.#....\n###..####.#..#...#..#..#....#.#....#....\n#....#..#.###...#...###.....#.#.##.#....\n#....#..#.#....#....#....#..#.#..#.#....\n####.#..#.#....####.#.....##...###.####."
         class_under_test = Day10().init_with(False)
         self.assertEqual(expected, str(class_under_test.run2()))
