@@ -21,13 +21,16 @@ class Monkey:
         self.if_false = if_false
         self.inspections = 0
 
-    def throw_next(self):
+    def throw_next(self, all_divisions):
         if len(self.items) == 0:
             return None
         self.inspections = self.inspections + 1   
         item = self.items.pop(0)
         item = self.operation(item)
-        item = math.floor(item / 3)
+        if all_divisions == None:
+            item = math.floor(item / 3)
+        else:
+            item = item % all_divisions
         if item % self.test == 0:
             return (self.if_true, item)
         else:
