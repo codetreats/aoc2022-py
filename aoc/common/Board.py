@@ -24,6 +24,16 @@ class Board:
 
     def set(self, x, y, value):
         self.content[(x, y)] = value
+    
+    def find(self, value):
+        for x in range(self.width):
+            for y in range(self.height):
+                if self.get_or_none(x, y) == value:
+                    return (x, y)
+        return None
+
+    def index(self, x, y):
+        return y * self.width + x
 
     def neighbors(self, x, y, with_diag=False, with_self=False):
         neighbors = {}
