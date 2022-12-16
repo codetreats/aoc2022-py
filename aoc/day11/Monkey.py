@@ -41,34 +41,30 @@ class Monkey:
 
     @staticmethod
     def from_lines(lines):
-        pattern = re.compile(r"Monkey (\d*):")
-        line = lines.pop(0)
-        match = pattern.match(line)
+        pattern = re.compile(r"Monkey (\d*):\n.*Starting items: (.*)\n.*Operation: new = old (.) (.*)\n.*Test: divisible by (\d*)\n.*If true: throw to monkey (\d*)\n.*If false: throw to monkey (\d*)")
+        match = pattern.match("\n".join(lines))
+        
         id = int(match.group(1))
-        pattern = re.compile(r".*Starting items: (.*)")
-        match = pattern.match(lines.pop(0))
-        items = [int(x) for x in match.group(1).split(", ")]
-        pattern = re.compile(r".*Operation: new = old (.) (.*)")
-        match = pattern.match(lines.pop(0))
-        if match.group(1) == "*":
-            if match.group(2) == "old":
+        item_list = match.group(2)
+        operator = match.group(3)
+        operand = match.group(4)
+        test = int(match.group(5))
+        if_true = int(match.group(6))
+        if_false = int(match.group(7))
+
+        items = [int(x) for x in item_list.split(", ")]
+        
+        if operator == "*":
+            if operand == "old":
                 operation = lambda x: x * x
             else:
-                op = int(match.group(2))
+                op = int(operand)
                 operation = lambda x: x * op
         else:
-            if match.group(2) == "old":
+            if operand == "old":
                 operation = lambda x: x + x
             else:
-                op = int(match.group(2))
+                op = int(operand)
                 operation = lambda x: x + op
-        pattern = re.compile(r".*Test: divisible by (\d*)")
-        match = pattern.match(lines.pop(0))
-        test = int(match.group(1))
-        pattern = re.compile(r".*If true: throw to monkey (\d*)")
-        match = pattern.match(lines.pop(0))
-        if_true = int(match.group(1))
-        pattern = re.compile(r".*If false: throw to monkey (\d*)")
-        match = pattern.match(lines.pop(0))
-        if_false = int(match.group(1))
+        
         return Monkey(id, items, operation, test, if_true, if_false)
