@@ -15,7 +15,7 @@ class Day16(Day):
         for room in [Room.from_line(line) for line in lines]:
             rooms[room.name] = room
             indices[room.name] = index
-            index=index+1
+            index=index + 1
         dijkstra = Dijkstra()
         edges = {}
         for r in rooms.values():
@@ -27,22 +27,21 @@ class Day16(Day):
             for t in rooms:
                path = dijkstra.shortest_path(len(edges), indices[r], indices[t], edges) 
                self.shortest_pathes[(r, t)] = path.length
+        self.valves = []
+        for r in rooms.values():
+            if r.rate > 0:
+                self.valves.append(r.name)
         return rooms
 
     def run1(self):
-        valves = []
-        for r in self.data.values():
-            if r.rate > 0:
-                valves.append(r.name)
-        return self.most_pressure(30, "AA", valves, 0, 0, 0)
+        return self.most_pressure(30, "AA", self.valves, 0, 0, 0)
 
     def run2(self):
-        valves = []
-        for r in self.data.values():
-            if r.rate > 0:
-                valves.append(r.name)
+        valves = self.valves
         options = []
+        # iterate all possibilites how to split up the valves between me and the elephant
         for i in range(2 ** len(valves)):
+            # convert to bin, 0 means me, 1 means elephant
             bin = "{0:b}".format(i).rjust(len(valves))
             me = []
             elephant = []
@@ -51,14 +50,11 @@ class Day16(Day):
                     me.append(valves[i])
                 else:
                     elephant.append(valves[i])
+            # run me and the elephant independently
             options.append(self.most_pressure(26, "AA", me, 0, 0, 0) + self.most_pressure(26, "AA", elephant, 0, 0, 0))
         return max(options)
 
     def most_pressure(self, max_time, pos, valves, time, total_p, current_p):
-        space = "".rjust(time)
-        #print(space + " Minute " + str(time) + ", remaining " + str(valves) + ", total=" + str(total_p) + ": current= " + str(current_p))
-        if len(valves) == 0:
-            return total_p + current_p * (max_time - time)
         options = []
         for v in valves:
             distance = self.distance(pos, v) + 1 # + 1 for opening the valve
@@ -75,11 +71,11 @@ class Day16(Day):
     def distance(self, start, end):
         return self.shortest_pathes[(start, end)]
 
-    def clone_without(self, l, w):
+    def clone_without(self, valves, valve):
         clone = []
-        for e in l:
-            if w != e:
-                clone.append(e)
+        for v in valves:
+            if valve != v:
+                clone.append(v)
         return clone
         
         

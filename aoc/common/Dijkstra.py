@@ -33,7 +33,8 @@ class Dijkstra:
                     if newDistance < distances[v.node]:
                         distances[v.node] = newDistance
                         preds[v.node] = u
-        raise
+        # print("No path from " + str(startNode) + " to " + str(endNode))
+        return DijkstraResult([], 1000000000)
 
     def min(self, queue, distances):
         minimum = min([distances[q] for q in queue])
