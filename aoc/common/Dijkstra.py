@@ -17,8 +17,8 @@ class Dijkstra:
         distances  = [1000000000 for x in range(nodeCount)]
         preds  = [-1 for x in range(nodeCount)]
         distances[startNode] = 0
-        queue = [ 0 ]
-        added = set([0])
+        queue = [ startNode ]
+        added = set([startNode])
         while len(queue) > 0:
             u = self.min(queue, distances)
             queue.remove(u)
@@ -36,7 +36,7 @@ class Dijkstra:
         raise
 
     def min(self, queue, distances):
-        minimum = min([distances[x] for x in queue])
+        minimum = min([distances[q] for q in queue])
         for q in queue:
             if distances[q] == minimum:
                 return q

@@ -1,6 +1,6 @@
 import time
 import os
-
+import sys
 
 class Day:
     day = None
@@ -34,6 +34,7 @@ class Day:
             duration = end - start
             unit = "nanos"
         print(f"Part {nr} took {duration} {unit}")
+        sys.stdout.flush()
 
     def init(self):
         self.init_with(self.use_dummy)
