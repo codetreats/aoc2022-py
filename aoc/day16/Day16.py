@@ -8,14 +8,18 @@ class Day16(Day):
     use_dummy = True
 
     def convert(self, lines):
+        # all rooms as HashMap Roomname -> Room
         rooms = {}
+        # maps e.g. AA to 0, BB to 1
         indices = {}
         index = 0
-        self.shortest_pathes = {}
+        # Parse input
         for room in [Room.from_line(line) for line in lines]:
             rooms[room.name] = room
             indices[room.name] = index
             index=index + 1
+
+        # calculate all shortest pathes from each room to each other room
         dijkstra = Dijkstra()
         edges = {}
         for r in rooms.values():
@@ -23,10 +27,13 @@ class Day16(Day):
             for t in r.tunnels:
                 e.append(EdgeDistance(indices[t], 1))
             edges[indices[r.name]] = e
+        self.shortest_pathes = {}
         for r in rooms:
             for t in rooms:
                path = dijkstra.shortest_path(len(edges), indices[r], indices[t], edges) 
                self.shortest_pathes[(r, t)] = path.length
+
+        # Collect all rooms which have working valves (rate > 0)
         self.valves = []
         for r in rooms.values():
             if r.rate > 0:
@@ -57,7 +64,7 @@ class Day16(Day):
     def most_pressure(self, max_time, pos, valves, time, total_p, current_p):
         options = []
         for v in valves:
-            distance = self.distance(pos, v) + 1 # + 1 for opening the valve
+            distance = self.shortest_pathes[(pos, v)] + 1 # + 1 for opening the valve
             tp = total_p + current_p * distance
             cp = current_p + self.data[v].rate
             if time + distance <= max_time:
@@ -65,11 +72,6 @@ class Day16(Day):
         if len(options) == 0:
             return total_p + current_p * (max_time - time)
         return max(options)
-            
-
-
-    def distance(self, start, end):
-        return self.shortest_pathes[(start, end)]
 
     def clone_without(self, valves, valve):
         clone = []
