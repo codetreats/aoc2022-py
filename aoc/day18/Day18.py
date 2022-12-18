@@ -32,31 +32,20 @@ class Day18(Day):
         air = self.count_air(droplets)
         while air != last_air:
             last_air = air
-            for x in range(0, max_x + 1):
-                for y in range(0, max_y + 1):
-                    for z in range(0, max_z + 1):  
-                        droplet = droplets[(x, y, z)]  
-                        if droplet.is_air():
-                            for n in droplet.neighbours():
-                                if n in droplets and not droplets[n].is_lava:
-                                    droplets[n].is_reachable = True
+            for droplet in filter(lambda d: d.is_air(), droplets.values()):
+                for n in filter(lambda n: n in droplets and not droplets[n].is_lava, droplet.neighbours()):
+                    droplets[n].is_reachable = True
             air = self.count_air(droplets)
 
         return self.count_sides(droplets)
 
     def count_air(self, droplets):
-        count = 0
-        for d in droplets:
-            if droplets[d].is_air():
-                count = count + 1
-        return count
+        return len(list(filter(lambda d: d.is_air(), droplets.values())))
 
     def count_sides(self, droplets):
         total = 0
-        for d in droplets:
-            if not droplets[d].is_lava:
+        for d in droplets.values():
+            if not d.is_lava:
                 continue
-            for n in droplets[d].neighbours():
-                if n not in droplets or droplets[n].is_air():
-                    total = total + 1
+            total = total + len(list(filter(lambda n: n not in droplets or droplets[n].is_air(), d.neighbours())))
         return total
