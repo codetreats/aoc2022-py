@@ -5,11 +5,11 @@ from aoc.day18.Day18 import Day18
 class testDay18(unittest.TestCase):
     def test_part1_dummy(self):
         class_under_test = Day18().init_with(True)
-        self.assertEqual("", str(class_under_test.run1()))
+        self.assertEqual("64", str(class_under_test.run1()))
 
     def test_part1(self):
         class_under_test = Day18().init_with(False)
-        self.assertEqual("", str(class_under_test.run1()))
+        self.assertEqual("4390", str(class_under_test.run1()))
 
     def test_part2_dummy(self):
         class_under_test = Day18().init_with(True)
