@@ -1,8 +1,11 @@
 from aoc.common.Board import Board
 
 class Cave(Board):
+    removed: int
+
     def __init__(self, width, height):
         super(Cave, self).__init__(width, height, ".")
+        self.removed = 0
 
     def max_height(self):
         max = -1
@@ -11,22 +14,12 @@ class Cave(Board):
                 max = c[1]
         return max + 1
 
-    def remove_tmp(self):
-        content = {}
-        for c in self.content:
-            if self.content[c] != "@":
-                content[c] = self.content[c] 
-        self.content = content
+    def total_height(self):
+        return self.max_height() + self.removed
 
     def add(self, start, rock):        
-        self.remove_tmp()
         for r in rock.pixel:
             self.set(start[0] + r[0], start[1] + r[1], "#")
-
-    def add_temp(self, start, rock):
-        self.remove_tmp()
-        for r in rock.pixel:
-            self.set(start[0] + r[0], start[1] + r[1], "@")
 
     def fits(self, start, rock):
         for r in rock.pixel:
@@ -34,6 +27,16 @@ class Cave(Board):
             if val == "#" or val == None:
                 return False
         return True
+
+    def cleanup(self):
+        content = {}
+        if self.max_height() < 200:
+            return
+        for c in self.content:
+            if c[1] > 100:
+                content[c[0], c[1] - 100] = self.content[c]
+        self.content = content
+        self.removed = self.removed + 100
 
     def __str__(self):
         lines = []
